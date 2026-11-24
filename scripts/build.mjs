@@ -17,6 +17,7 @@ const paras = (text) => String(text).split(/\n+/).map((t) => `<p>${esc(t)}</p>`)
 const instruments = readJSON(path.join(DATA, "instruments.json"));
 const topics = readJSON(path.join(DATA, "vclt", "topics.json")).sort((a, b) => a.order - b.order);
 const cases = readJSON(path.join(DATA, "cases", "cases.json"));
+const quiz = readJSON(path.join(DATA, "quiz", "questions.json"));
 const articleFiles = fs.readdirSync(path.join(DATA, "vclt")).filter((f) => /^\d+-.*\.json$/.test(f)).sort();
 const articles = articleFiles.flatMap((f) => readJSON(path.join(DATA, "vclt", f)));
 
@@ -36,6 +37,18 @@ for (const a of articles) {
 }
 for (const c of cases) for (const n of c.articles ?? []) if (!artByNo.has(n)) errors.push(`案例 ${c.id}：articles 指向不存在的第${n}條`);
 if (new Set(articles.map((a) => a.no)).size !== articles.length) errors.push("條號重複");
+{
+  const ids = new Set();
+  for (const q of quiz) {
+    if (ids.has(q.id)) errors.push(`題目 ${q.id} 重複`);
+    ids.add(q.id);
+    if (!q.options.includes(q.answer)) errors.push(`題目 ${q.id}：答案不在選項內`);
+    for (const o of q.options) {
+      if (!artByNo.has(o)) errors.push(`題目 ${q.id}：選項第${o}條不存在`);
+      if (o !== q.answer && !q.notes?.[o]) errors.push(`題目 ${q.id}：缺少第${o}條的誤選說明`);
+    }
+  }
+}
 if (errors.length) {
   console.error("資料錯誤：\n- " + errors.join("\n- "));
   process.exit(1);
@@ -60,6 +73,7 @@ function layout({ title, desc, depth, body, scripts = "" }) {
     <nav>
       <a href="${R}vclt/index.html">條約法</a>
       <a href="${R}cases/index.html">判例</a>
+      <a href="${R}quiz/index.html">練習</a>
       <a href="${R}about.html">關於</a>
     </nav>
     <form class="mini" action="${R}index.html" method="get" role="search">
@@ -94,6 +108,7 @@ fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(DIST, { recursive: true });
 fs.copyFileSync(path.join(SRC, "style.css"), path.join(DIST, "style.css"));
 fs.copyFileSync(path.join(SRC, "search.js"), path.join(DIST, "search.js"));
+fs.copyFileSync(path.join(SRC, "quiz.js"), path.join(DIST, "quiz.js"));
 
 const vclt = instruments.find((i) => i.id === "vclt");
 
@@ -151,7 +166,7 @@ fs.writeFileSync(path.join(DIST, "search-data.js"), "window.SEARCH_DATA=" + JSON
   <h2>一個條約的一生</h2>
   <p class="muted">依條約從誕生到結束的順序整理《維也納條約法公約》（共 ${articles.length} 條）。</p>
   <ol class="stages">${stages}</ol>
-  <p><a href="vclt/index.html">→ 查看公約介紹與全部條文</a>　<a href="cases/index.html">→ 判例（${cases.length}）</a></p>
+  <p><a href="vclt/index.html">→ 查看公約介紹與全部條文</a>　<a href="cases/index.html">→ 判例（${cases.length}）</a>　<a href="quiz/index.html">→ 情境練習（${quiz.length} 題）</a></p>
 </section>`;
   write(
     "index.html",
@@ -233,6 +248,8 @@ articles.forEach((a, i) => {
 
   ${cs.length ? `<h2>相關判例</h2><ul>${cs.map((c) => `<li><a href="../cases/${c.id}.html">${esc(c.short)}</a> <span class="muted">（${esc(c.court)}，${c.year}）</span></li>`).join("")}</ul>` : ""}
 
+  ${quiz.some((q) => q.answer === a.no) ? `<h2>練習</h2><p><a href="../quiz/index.html?article=${a.no}">做「第${a.no}條」的情境題（${quiz.filter((q) => q.answer === a.no).length} 題）→</a></p>` : ""}
+
   <h2>查官方全文</h2>
   <ul>${vclt.links.map((l) => `<li><a href="${esc(l.url)}" rel="noopener">${esc(l.label)}</a></li>`).join("")}</ul>
 </article>
@@ -279,6 +296,33 @@ articles.forEach((a, i) => {
 </article>`;
     write(`cases/${c.id}.html`, layout({ title: `${c.short}｜國際公法法源速查`, desc: c.lesson, depth: 1, body }));
   }
+}
+
+// 練習頁
+{
+  const artMap = Object.fromEntries(articles.map((a) => [a.no, { title: a.title, url: `../vclt/art-${a.no}.html`, topic: a.topic }]));
+  const qdata = quiz.map((q) => ({ ...q, topic: artByNo.get(q.answer).topic }));
+  const payload = { questions: qdata, articles: artMap, topics: topics.map((t) => ({ id: t.id, title: t.title })) };
+  fs.writeFileSync(path.join(DIST, "quiz-data.js"), "window.QUIZ_DATA=" + JSON.stringify(payload) + ";");
+  const body = `
+<nav class="crumb"><a href="../index.html">首頁</a> › 練習</nav>
+<h1>情境練習</h1>
+<p class="lead">每題一個小情境，選出最適用的條文。答完會告訴你為什麼對、為什麼其他選項不對。</p>
+<div id="quiz-setup" class="quiz-setup">
+  <label>範圍
+    <select id="quiz-topic"><option value="all">全部主題</option>${topics.map((t) => `<option value="${t.id}">${esc(t.title)}</option>`).join("")}</select>
+  </label>
+  <label>題數
+    <select id="quiz-count"><option value="10">10 題</option><option value="20">20 題</option><option value="all">全部</option></select>
+  </label>
+  <button id="quiz-start" class="btn">開始</button>
+  <p id="quiz-filter-note" class="muted" hidden></p>
+</div>
+<div id="quiz-box" aria-live="polite"></div>`;
+  write(
+    "quiz/index.html",
+    layout({ title: "情境練習｜國際公法法源速查", desc: "用小情境練習判斷該援引哪一條條約法規則。", depth: 1, body, scripts: `<script src="../quiz-data.js"></script><script src="../quiz.js"></script>` })
+  );
 }
 
 // 關於頁
