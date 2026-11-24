@@ -57,7 +57,7 @@
       '<ul class="arts">' +
       hits.map(function (d) {
         return '<li><a href="' + d.url + '"><strong>' + esc(d.title) + '</strong></a> ' +
-          '<span class="tag">' + (d.k === "art" ? "條文" : "判例") + '</span>' +
+          '<span class="tag">' + (d.k === "art" ? esc(d.abbr) + " 條文" : "判例") + '</span>' +
           '<br><span class="muted">' + esc(d.sub) + "｜" + esc(d.line) + "</span></li>";
       }).join("") + "</ul>";
   }

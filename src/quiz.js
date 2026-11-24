@@ -8,7 +8,8 @@
   if (!D || !box) return;
 
   var state = null;
-  var articleFilter = new URLSearchParams(location.search).get("article");
+  var params = new URLSearchParams(location.search);
+  var articleFilter = params.get("article") ? (params.get("i") || "") + ":" + params.get("article") : null;
 
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
@@ -23,13 +24,19 @@
     }
     return a;
   }
-  function label(no) { return "第" + no + "條　" + D.articles[no].title; }
+  function label(key) {
+    var a = D.articles[key];
+    return (D.multi ? a.abbr + " " : "") + a.lab + "　" + a.title;
+  }
 
   function pool() {
     var qs = D.questions;
     if (articleFilter) return qs.filter(function (q) { return q.answer === articleFilter; });
     var t = topicSel.value;
-    return t === "all" ? qs : qs.filter(function (q) { return q.topic === t; });
+    if (t === "all") return qs;
+    var parts = t.split(":");
+    if (parts[1] === "*") return qs.filter(function (q) { return q.inst === parts[0]; });
+    return qs.filter(function (q) { return q.topic === t; });
   }
 
   function start(questions) {
@@ -64,12 +71,12 @@
       if (no === q.answer) b.classList.add("right");
       else if (no === picked) b.classList.add("wrong");
     });
-    var other = picked !== q.answer ? "<p>你選的第 " + picked + " 條：" + esc(q.notes[picked]) + "</p>" : "";
+    var other = picked !== q.answer ? "<p>你選的" + esc(D.articles[picked].lab) + "：" + esc(q.notes[picked]) + "</p>" : "";
     var last = state.i === state.qs.length - 1;
     document.getElementById("feedback").innerHTML =
       '<div class="note ' + (ok ? "ok" : "bad") + '"><p><strong>' + (ok ? "答對了！" : "答錯了。") +
       "正確答案：" + esc(label(q.answer)) + "</strong></p><p>" + esc(q.explain) + "</p>" + other +
-      '<p><a href="' + D.articles[q.answer].url + '">查看第 ' + q.answer + " 條完整說明 →</a></p></div>" +
+      '<p><a href="' + D.articles[q.answer].url + '">查看' + esc(D.articles[q.answer].lab) + "完整說明 →</a></p></div>" +
       '<p><button class="btn" id="next">' + (last ? "看結果" : "下一題") + "</button></p>";
     var next = document.getElementById("next");
     next.addEventListener("click", function () {

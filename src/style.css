@@ -90,3 +90,10 @@ select { font: inherit; padding: .45rem .6rem; border: 1px solid var(--line); bo
 .opt.wrong { border-color: #c0392b; background: rgba(192, 57, 43, .13); }
 .note.ok { border-color: #2e8b57; }
 .note.bad { border-color: #c0392b; }
+
+/* 法源卡片 */
+.cards { list-style: none; padding: 0; margin: .8rem 0; display: grid; gap: .8rem; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: .8rem 1rem; }
+.card p { margin: .2rem 0; }
+.card a { text-decoration: none; }
+.inst-section { margin-top: 2.5rem; }
