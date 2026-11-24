@@ -1,0 +1,77 @@
+:root {
+  --bg: #fbfaf7; --fg: #1f2328; --muted: #6a7078; --line: #e3e0d8;
+  --accent: #1d4f91; --accent-bg: #e8f0fa; --card: #ffffff;
+  --scn-bg: #fff6e0; --scn-line: #e8c76a;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #15181c; --fg: #e6e8eb; --muted: #9aa1a9; --line: #2c3238;
+    --accent: #7db2ff; --accent-bg: #1d2a3b; --card: #1b1f24;
+    --scn-bg: #2b2412; --scn-line: #7a6422;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 16px/1.85 "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+}
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+a { color: var(--accent); }
+h1 { font-size: 1.9rem; line-height: 1.35; margin: 1.2rem 0 .3rem; }
+h1 small { font-size: .95rem; color: var(--muted); font-weight: 400; }
+h2 { font-size: 1.15rem; margin: 2rem 0 .4rem; }
+h3 { font-size: 1.02rem; margin: 1.4rem 0 .3rem; }
+.muted { color: var(--muted); font-size: .92rem; }
+.lead { font-size: 1.08rem; }
+.en { color: var(--muted); margin: 0 0 .8rem; font-size: .95rem; }
+.eyebrow { color: var(--accent); font-weight: 600; margin: 1.4rem 0 0; font-size: .9rem; }
+.oneliner { font-size: 1.1rem; background: var(--accent-bg); border-left: 4px solid var(--accent); padding: .7rem 1rem; border-radius: 4px; }
+.note { border: 1px solid var(--line); background: var(--card); padding: .6rem 1rem; border-radius: 6px; font-size: .94rem; }
+.scenario { background: var(--scn-bg); border: 1px solid var(--scn-line); border-radius: 8px; padding: .2rem 1.1rem 1rem; margin: 1.8rem 0; }
+.scenario h2 { margin-top: .9rem; }
+.scenario p { margin: .4rem 0; }
+
+header.site { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; padding-top: .6rem; padding-bottom: .6rem; }
+.brand { font-weight: 700; text-decoration: none; color: var(--fg); margin-right: auto; }
+.bar nav a { margin-right: .9rem; text-decoration: none; }
+.mini input { width: 12.5rem; max-width: 100%; }
+input[type=search] {
+  width: 100%; padding: .55rem .8rem; font: inherit; color: var(--fg);
+  background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+}
+input[type=search]:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.mini input { padding: .3rem .6rem; font-size: .9rem; }
+footer.site { margin-top: 4rem; padding: 1.5rem 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .88rem; }
+
+.hero { padding: 1.5rem 0 .5rem; }
+.hero input { font-size: 1.05rem; padding: .8rem 1rem; }
+.results { margin-top: 1rem; }
+.arts { list-style: none; padding: 0; margin: .5rem 0; }
+.arts li { padding: .7rem 0; border-bottom: 1px solid var(--line); }
+.arts a { text-decoration: none; }
+.arts .no { color: var(--muted); font-weight: 400; margin-right: .3rem; }
+.tag { font-size: .75rem; padding: .05rem .45rem; border-radius: 99px; background: var(--accent-bg); color: var(--accent); margin-left: .3rem; }
+
+.stages { list-style: none; padding: 0; margin: 1rem 0; }
+.stage { display: flex; gap: .9rem; padding: .9rem 0; border-bottom: 1px solid var(--line); }
+.stage-no { flex: none; width: 2rem; height: 2rem; border-radius: 50%; background: var(--accent); color: var(--bg); display: grid; place-items: center; font-weight: 700; margin-top: .2rem; }
+.stage h3 { margin: 0; }
+.stage p { margin: .15rem 0; }
+.chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+.chip { display: inline-block; padding: .1rem .7rem; border-radius: 99px; background: var(--accent-bg); text-decoration: none; font-size: .88rem; line-height: 1.7; }
+
+.crumb { margin-top: 1rem; font-size: .88rem; color: var(--muted); }
+.meta { border-collapse: collapse; margin: 1rem 0; width: 100%; }
+.meta th, .meta td { text-align: left; padding: .35rem .6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+.meta th { width: 6.5rem; color: var(--muted); font-weight: 500; }
+.pager { display: flex; justify-content: space-between; gap: 1rem; margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: .92rem; }
+.pager a { text-decoration: none; }
+code { background: var(--accent-bg); padding: .05rem .35rem; border-radius: 4px; font-size: .9em; }
+[hidden] { display: none !important; }
+@media (max-width: 520px) {
+  h1 { font-size: 1.6rem; }
+  .mini { width: 100%; }
+  .mini input { width: 100%; }
+}

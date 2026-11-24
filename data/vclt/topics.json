@@ -1,0 +1,8 @@
+[
+  { "id": "conclusion", "order": 1, "title": "締結：條約怎麼成立", "stage": "談判・簽署・同意受拘束", "blurb": "誰有資格代表國家？簽了字就一定要遵守嗎？" },
+  { "id": "reservations", "order": 2, "title": "保留：我同意，但這一條除外", "stage": "加入時的但書", "blurb": "多邊條約怎麼讓更多國家加入，又不被掏空？" },
+  { "id": "observance", "order": 3, "title": "遵守與適用", "stage": "條約生效之後", "blurb": "為什麼要信守承諾？國內法能不能當藉口？" },
+  { "id": "interpretation", "order": 4, "title": "解釋：文字到底是什麼意思", "stage": "發生爭議時", "blurb": "條文模糊時，依什麼順序找答案？" },
+  { "id": "invalidity", "order": 5, "title": "無效：什麼情況下條約沒效力", "stage": "效力的瑕疵", "blurb": "錯誤、詐欺、脅迫與違反強行法。" },
+  { "id": "termination", "order": 6, "title": "終止與退出", "stage": "條約的結局", "blurb": "什麼時候可以不玩了？違約、情況改變與新規範。" }
+]

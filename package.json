@@ -1,0 +1,12 @@
+{
+  "name": "international-law-quick-reference",
+  "version": "0.1.0",
+  "private": true,
+  "description": "國際公法法源速查（先從條約法開始）",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/build.mjs && python3 -m http.server 8080 --directory dist"
+  },
+  "engines": { "node": ">=18" }
+}

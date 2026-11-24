@@ -1,0 +1,22 @@
+[
+  {
+    "id": "vclt",
+    "abbr": "VCLT",
+    "title": "維也納條約法公約",
+    "en": "Vienna Convention on the Law of Treaties",
+    "adopted": "1969-05-23",
+    "inForce": "1980-01-27",
+    "depositary": "聯合國秘書長",
+    "intro": "條約法的「基本法」：規定條約如何締結、保留、遵守、解釋、無效與終止。共 8 部分、85 條。本站先整理最常被引用、也最適合入門的 24 條。",
+    "links": [
+      { "label": "聯合國條約集（UNTC）：締約國與狀態", "url": "https://treaties.un.org/pages/ViewDetails.aspx?src=TREATY&mtdsg_no=XXIII-1&chapter=23" },
+      { "label": "公約全文（英文，聯合國國際法委員會網站）", "url": "https://legal.un.org/ilc/texts/instruments/english/conventions/1_1_1969.pdf" }
+    ],
+    "notes": [
+      "公約只適用於「國家之間」的條約（第 1 條），而且依第 4 條，原則上只適用於公約對該國生效後才締結的條約。",
+      "公約不是唯一的法源：許多規則同時是國際習慣法（例如第 26、31、32、60–62 條，國際法院都曾這樣認定），所以沒加入公約的國家，通常仍受這些規則拘束。",
+      "台灣視角：中華民國（台灣）不是聯合國會員，也不是公約締約方；但學習、實務與判例引用時，條約法的討論幾乎都以此公約為基準。",
+      "另有 1986 年《關於國家與國際組織間或國際組織相互間條約法的維也納公約》，尚未生效，本站暫不收錄。"
+    ]
+  }
+]
